@@ -14,6 +14,13 @@ import TabTwoScreen from '../screens/TabTwoScreen'
 import Main from '../screens/Main'
 import Settings from '../screens/Settings'
 import Search from '../screens/Search'
+import Notifications from '../screens/Notifications'
+import Lang from '../screens/Lang'
+import Unit from '../screens/Unit'
+
+
+
+
 
 // import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
@@ -33,11 +40,17 @@ const Stack = createStackNavigator();
 function RootNavigator() {
   return (
     <Stack.Navigator headerMode="none" >
-      <Stack.Screen name="Home" component={Main} />
       <Stack.Screen name="Root" component={TabOneScreen} />
       <Stack.Screen name="TabTwo" component={TabTwoScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="Home" component={Main} />
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="Lang" component={Lang}/>
+      <Stack.Screen name="Notifications" component={Notifications}/>
+      <Stack.Screen name="Unit" component={Unit}/>
+
+
+
     </Stack.Navigator>
   );
 }
