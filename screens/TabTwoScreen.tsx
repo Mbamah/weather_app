@@ -93,7 +93,7 @@ export default function TabOneScreen({
               fontFamily: "Pop",
             }}
           >
-            DONE
+            Get started
           </Text>
         </TouchableOpacity>
 

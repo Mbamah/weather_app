@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  ActivityIndicator
 } from "react-native";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
@@ -13,6 +14,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 // fonts
 import { useFonts } from "expo-font";
+import ContentLoader from "react-native-easy-content-loader";
 // import * as Font from 'expo-font'
 
 //icons
@@ -24,16 +26,22 @@ import { Feather } from "@expo/vector-icons";
 import { color } from "react-native-reanimated";
 
 export default function Main({ navigation, route }: StackScreenProps<any>) {
+  const [loading, setIsloading] = React.useState(true)
   const [weather, setWeather] = React.useState([]);
-  const key = `a0e002ea5db68525a641a39bae1bab58`;
-  const URL = `http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${key}`;
+  const key = `bf8fdb8b9690f8726dde0e5fe0d89294`;
+  const lat =`33.44`
+  const lon = `-94.04`
+  const URL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${key}`;
   const fetchData = async () => {
     let res = await fetch(URL);
     let data = await res.json();
     console.log(data);
+    setIsloading(false)
+    setWeather(data)
   };
   React.useEffect(() => {
     fetchData();
+    
   }, []);
   const [loaded] = useFonts({
     SairaStencil: require("../assets/fonts/SairaStencilOne-Regular.ttf"),
@@ -42,6 +50,12 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
   });
   if (!loaded) {
     return null;
+  }
+
+  if(loading){
+    return <ActivityIndicator size="large" color="#0000ff" style={{flex: 1,
+      justifyContent: "center", backgroundColor:'grey'}} />
+      // return <ContentLoader active />
   }
   return (
     <SafeAreaView style={styles.container}>
