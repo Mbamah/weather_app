@@ -5,7 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
@@ -26,22 +26,36 @@ import { Feather } from "@expo/vector-icons";
 import { color } from "react-native-reanimated";
 
 export default function Main({ navigation, route }: StackScreenProps<any>) {
-  const [loading, setIsloading] = React.useState(true)
-  const [weather, setWeather] = React.useState([]);
+  const [loading, setIsloading] = React.useState(true);
+  const [error, setIsError] = React.useState("");
+  const [weather, setWeather] = React.useState({});
+
+
   const key = `bf8fdb8b9690f8726dde0e5fe0d89294`;
-  const lat =`33.44`
-  const lon = `-94.04`
-  const URL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${key}`;
+  const lat = `51.50853`;
+  const lon = `-0.12574
+
+`;
+  // const URL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${key}`;
+  const URL = `https://api.openweathermap.org/data/2.5/weather?q=mumbai&units=metric&appid=${key}`;
   const fetchData = async () => {
-    let res = await fetch(URL);
-    let data = await res.json();
-    console.log(data);
-    setIsloading(false)
-    setWeather(data)
+    try {
+      let res = await fetch(URL);
+      let data = await res.json();
+      console.log(data);
+      console.log();
+      
+      setIsloading(false);
+      setWeather(data);
+      setIsError("");
+    } catch (error) {
+      setIsloading(false)
+      setIsError('something went wrong')
+    }
   };
+
   React.useEffect(() => {
     fetchData();
-    
   }, []);
   const [loaded] = useFonts({
     SairaStencil: require("../assets/fonts/SairaStencilOne-Regular.ttf"),
@@ -52,11 +66,17 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
     return null;
   }
 
-  if(loading){
-    return <ActivityIndicator size="large" color="#0000ff" style={{flex: 1,
-      justifyContent: "center", backgroundColor:'grey'}} />
-      // return <ContentLoader active />
+  if (loading) {
+    return (
+      <ActivityIndicator
+        size="large"
+        color="#0000ff"
+        style={{ flex: 1, justifyContent: "center", backgroundColor: "grey" }}
+      />
+    );
   }
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ zIndex: 10 }}>
@@ -107,20 +127,23 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
                 fontFamily: "San",
               }}
             >
-              Tamale
+              {weather?.name}
             </Text>
           </View>
           {/* word */}
           <View style={{}}>
             <Text
               style={{
-                fontSize: 18,
+                fontSize: 10,
                 backgroundColor: "#1278D6",
                 color: "white",
                 fontFamily: "San",
               }}
             >
-              Partly cloudy
+              {/* Partly cloudy */}
+              {/* {console.log(weather?.weather[0].description  )} */}
+
+              {/* {weather?.[0]?.id} */}
             </Text>
           </View>
           {/* temp */}
@@ -133,7 +156,9 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
                 fontFamily: "Pop",
               }}
             >
-              23&deg;
+              {/* {Math.round(weather?.current?.temp)} */}
+              {weather?.main?.temp}
+              {/* 22&deg; */}
             </Text>
           </View>
           {/* add icon */}
@@ -144,8 +169,8 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
               }}
             >
               <MaterialIcons
-                name="add-circle-outline"
-                size={24}
+                name="search"
+                size={28}
                 color="white"
                 style={{ backgroundColor: "#1278d6" }}
               />
@@ -298,7 +323,7 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
             }}
           >
             <View>
-              <Text style={{ fontSize: 23 }}>Thursday      </Text>
+              <Text style={{ fontSize: 23 }}>Thursday </Text>
             </View>
             <View>
               <MaterialCommunityIcons
@@ -320,7 +345,7 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
             }}
           >
             <View>
-              <Text style={{ fontSize: 23 }}>Friday            </Text>
+              <Text style={{ fontSize: 23 }}>Friday </Text>
             </View>
             <View>
               <MaterialCommunityIcons
@@ -342,7 +367,7 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
             }}
           >
             <View>
-              <Text style={{ fontSize: 23 }}>Saturday       </Text>
+              <Text style={{ fontSize: 23 }}>Saturday </Text>
             </View>
             <View>
               <MaterialCommunityIcons
@@ -364,7 +389,7 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
             }}
           >
             <View>
-              <Text style={{ fontSize: 23 }}>Sunday          </Text>
+              <Text style={{ fontSize: 23 }}>Sunday </Text>
             </View>
             <View>
               <MaterialCommunityIcons
@@ -386,7 +411,7 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
             }}
           >
             <View>
-              <Text style={{ fontSize: 23 }}>Monday        </Text>
+              <Text style={{ fontSize: 23 }}>Monday </Text>
             </View>
             <View>
               <MaterialCommunityIcons
@@ -408,7 +433,7 @@ export default function Main({ navigation, route }: StackScreenProps<any>) {
             }}
           >
             <View>
-              <Text style={{ fontSize: 23 }}>Tuesday       </Text>
+              <Text style={{ fontSize: 23 }}>Tuesday </Text>
             </View>
             <View>
               <MaterialCommunityIcons

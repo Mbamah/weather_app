@@ -19,6 +19,10 @@ import { useFonts } from "expo-font";
 // } from '@expo-google-fonts/saira-stencil-one'
 
 export default function Settings({ navigation, route }: StackScreenProps<any>) {
+  //
+ 
+  //
+
   const [loaded] = useFonts({
     SairaStencil: require("../assets/fonts/SairaStencilOne-Regular.ttf"),
     San: require("../assets/fonts/Sanchez-Regular.ttf"),
@@ -95,7 +99,11 @@ export default function Settings({ navigation, route }: StackScreenProps<any>) {
           </TouchableOpacity>
           {/* notification end */}
           {/* Units start */}
-          <TouchableOpacity onPress={() =>{navigation.navigate('Unit')}}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Unit");
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",

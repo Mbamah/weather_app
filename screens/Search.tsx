@@ -8,13 +8,55 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 // icons
 import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+
 import { Value } from "react-native-reanimated";
 // fonts
 import { useFonts } from "expo-font";
 // import * as Font from 'expo-font'
 
 export default function Search({ navigation, route }: StackScreenProps<any>) {
-  const [value, setValue] = React.useState("");
+  // const [value, setValue] = React.useState("");
+  //
+  const [query, setInquery] = React.useState(" ");
+  const [weather, setWeather] = React.useState({});
+  const key = `bf8fdb8b9690f8726dde0e5fe0d89294`;
+
+  // function getData(e) {
+  //   setInquery(e.target.value)
+  //   console.log(e);
+  
+  // }
+  // const URL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${key}`;
+  const URL = `https://api.openweathermap.org/data/2.5/weather?q=mumbai&units=metric&appid=${key}&query=${query}`;
+  const fetchData = async (query) => {
+    try {
+      let res = await fetch(URL);
+      let data = await res.json();
+      console.log(data);
+      setWeather(data);
+    } catch (error) {
+      console.log("something went wrong");
+    }
+  };
+
+  // const fetchWeather = async () => {
+  //   const response = await fetch(
+  //     URL +
+  //       new URLSearchParams({
+  //         q: query,
+  //         units: "metric",
+  //         APPID: key,
+  //       })
+  //   ).catch(console.error);
+
+  //   console.log(response);
+
+  //   return await response.json().catch(console.error);
+  // };
+
+ 
+  //
   const [loaded] = useFonts({
     SairaStencil: require("../assets/fonts/SairaStencilOne-Regular.ttf"),
     San: require("../assets/fonts/Sanchez-Regular.ttf"),
@@ -62,23 +104,30 @@ export default function Search({ navigation, route }: StackScreenProps<any>) {
             marginTop: 30,
           }}
         >
+          {/* <View></View> */}
+          <TouchableOpacity onPress={()=>{fetchData('Accra')}}>
+            <FontAwesome name="search" size={24} color="black" />
+          </TouchableOpacity>
           <TextInput
             autoFocus
             keyboardType="web-search"
             clearTextOnFocus
-            onChangeText={(text) => {
-              setValue(text);
+            value={query}
+            onChangeText={(query) => {
+              setInquery(query)
             }}
-            value={value}
             placeholder={"eg. Accra"}
             style={styles.input}
           />
-          <TouchableOpacity
-            onPress={(text) => {
-              setValue("");
-            }}
-          >
-            <Text style={{ fontSize: 21, fontFamily: "San" }}>Cancel</Text>
+          <TouchableOpacity>
+            <Text
+              onPress={() => {
+                setInquery("");
+              }}
+              style={{ fontSize: 21, fontFamily: "San" }}
+            >
+              Cancel
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
